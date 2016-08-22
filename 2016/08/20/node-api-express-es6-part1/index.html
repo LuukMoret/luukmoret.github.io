@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <meta charset="utf-8">
+    
+    <title>How to create a modular RESTfull API with Node.js, Express and ECMAScript 6 Part 1 | Moret Consultancy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="In this 2 part blog post I will explain how to get started with building a RESTful API with Node.js, Express and ECMAScript 6 using a module approach.
+Go to https://github.com/LuukMoret/blog-node-api-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to create a modular RESTfull API with Node.js, Express and ECMAScript 6 Part 1">
+<meta property="og:url" content="http://moretconsultancy.com/2016/08/20/node-api-express-es6-part1/index.html">
+<meta property="og:site_name" content="Moret Consultancy">
+<meta property="og:description" content="In this 2 part blog post I will explain how to get started with building a RESTful API with Node.js, Express and ECMAScript 6 using a module approach.
+Go to https://github.com/LuukMoret/blog-node-api-">
+<meta property="og:image" content="http://moretconsultancy.com/2016/08/20/node-api-express-es6-part1/node-api-express-thumbnail.png">
+<meta property="og:updated_time" content="2016-08-22T09:42:40.888Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="How to create a modular RESTfull API with Node.js, Express and ECMAScript 6 Part 1">
+<meta name="twitter:description" content="In this 2 part blog post I will explain how to get started with building a RESTful API with Node.js, Express and ECMAScript 6 using a module approach.
+Go to https://github.com/LuukMoret/blog-node-api-">
+<meta name="twitter:image" content="http://moretconsultancy.com/2016/08/20/node-api-express-es6-part1/node-api-express-thumbnail.png">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/vendor/open-sans/styles.css">
+    <link rel="stylesheet" href="/vendor/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/vendor/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-71243417-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+    
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                
+                <span class="site-title">Moret Consultancy</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/tags">Tags</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/images/avatar.jpg" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">Tags</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/images/avatar.jpg" />
+            <h2 id="name">Luuk Moret</h2>
+            <h3 id="title">Freelance Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>Limburg, Netherlands</span>
+            <a id="follow" target="_blank" href="https://twitter.com/intent/user?screen_name=luukmoret">FOLLOW</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                3
+                <span>posts</span>
+            </div>
+            <div class="article-info-block">
+                9
+                <span>tags</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/luukmoret" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://twitter.com/LuukMoret" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://nl.linkedin.com/in/luukmoret" target="_blank" title="linkedin" class=tooltip>
+                            <i class="fa fa-linkedin"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://stackoverflow.com/users/4972749/luuk-moret" target="_blank" title="stack-overflow" class=tooltip>
+                            <i class="fa fa-stack-overflow"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-node-api-express-es6-part1" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            
+	
+		<img src="/2016/08/20/node-api-express-es6-part1/node-api-express-banner.jpg" class="article-banner" />
+	
+
+
+
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            How to create a modular RESTfull API with Node.js, Express and ECMAScript 6 Part 1
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/08/20/node-api-express-es6-part1/">
+            <time datetime="2016-08-20T17:27:56.000Z" itemprop="datePublished">2016-08-20</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/Tutorials/">Tutorials</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/API/">API</a>, <a class="tag-link" href="/tags/ECMAScript/">ECMAScript</a>, <a class="tag-link" href="/tags/Express/">Express</a>, <a class="tag-link" href="/tags/Node/">Node</a>, <a class="tag-link" href="/tags/REST/">REST</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>In this 2 part blog post I will explain how to get started with building a RESTful API with Node.js, Express and ECMAScript 6 using a module approach.</p>
+<p>Go to <a href="https://github.com/LuukMoret/blog-node-api-express-es6-part1" target="_blank" rel="external">https://github.com/LuukMoret/blog-node-api-express-es6-part1</a> to see the finished code.</p>
+<h3 id="Node-js"><a href="#Node-js" class="headerlink" title="Node.js"></a>Node.js</h3><p>Node.js is an asynchronous event driven JavaScript runtime, designed to build scalable network applications. Node.js can handle many connections concurrently in contrast to today’s more common concurrency model where OS threads are employed. </p>
+<p>Thread-based networking is relatively inefficient and very difficult to use. Furthermore, users of Node are free from worries of dead-locking the process, since there are no locks. Almost no function in Node directly performs I/O, so the process never blocks. Because nothing blocks, scalable systems are very reasonable to develop in Node.</p>
+<p>You can read more about <a href="https://github.com/nodejs/node/blob/master/doc/topics/blocking-vs-non-blocking.md" target="_blank" rel="external">Blocking vs Non-Blocking here</a>.</p>
+<h3 id="Express"><a href="#Express" class="headerlink" title="Express"></a>Express</h3><p>Express is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications. There are alternatives like <a href="http://koajs.com/" target="_blank" rel="external">Koa</a> and <a href="http://hapijs.com/" target="_blank" rel="external">Hapi</a> but Express is definitely the most widely used web framework for node.js today. </p>
+<h3 id="ECMAScript-6"><a href="#ECMAScript-6" class="headerlink" title="ECMAScript 6"></a>ECMAScript 6</h3><p>ECMAScript is a subset of JavaScript. JavaScript is basically ECMAScript at it’s core but builds upon it. Languages such as ActionScript, JavaScript, JScript all use ECMAScript as its core. </p>
+<p>ECMAScript 6, also known as ECMAScript 2015, is the latest version of the ECMAScript standard. ES6 is a significant update to the language, and the first update to the language since ES5 was standardized in 2009. Read more about these new features <a href="https://github.com/lukehoban/es6features" target="_blank" rel="external">here</a>. </p>
+<p>There is also a <a href="https://github.com/airbnb/javascript" target="_blank" rel="external">fantastic JavaScript Style Guide</a> from Airbnb. If you want to enforce these rules in your project, consider using the airbnb eslint npm package <a href="https://www.npmjs.com/package/eslint-config-airbnb" target="_blank" rel="external">found here</a> . </p>
+<p>With the above technologies explained we can start writing our node api!</p>
+<a id="more"></a>
+<h2 id="Prerequisites"><a href="#Prerequisites" class="headerlink" title="Prerequisites"></a>Prerequisites</h2><ul>
+<li><a href="https://nodejs.org/en/download/" target="_blank" rel="external">Node.js 6 or higher should be installed.</a></li>
+<li><a href="https://git-scm.com/downloads" target="_blank" rel="external">Git should be installed.</a></li>
+</ul>
+<h2 id="Project-setup"><a href="#Project-setup" class="headerlink" title="Project setup"></a>Project setup</h2><h5 id="Start-by-creating-a-folder-and-cd-into-it"><a href="#Start-by-creating-a-folder-and-cd-into-it" class="headerlink" title="Start by creating a folder and cd into it:"></a>Start by creating a folder and cd into it:</h5><p><code>mkdir mynodeapi &amp;&amp; cd mynodeapi</code></p>
+<h5 id="Install-the-official-express-generator"><a href="#Install-the-official-express-generator" class="headerlink" title="Install the official express generator:"></a>Install the official express generator:</h5><p><code>npm install express-generator -g</code></p>
+<h5 id="Run-the-express-generator"><a href="#Run-the-express-generator" class="headerlink" title="Run the express generator:"></a>Run the express generator:</h5><p><code>express -e --git</code></p>
+<h6 id="e-defaults-to-ejs-engine-instead-of-jade-as-usually-won’t-be-needing-this-with-an-api-We-will-remove-these-files-later"><a href="#e-defaults-to-ejs-engine-instead-of-jade-as-usually-won’t-be-needing-this-with-an-api-We-will-remove-these-files-later" class="headerlink" title="-e defaults to ejs engine instead of jade as (usually) won’t be needing this with an api. We will remove these files later."></a><code>-e</code> defaults to ejs engine instead of jade as (usually) won’t be needing this with an api. We will remove these files later.</h6><h6 id="git-will-add-a-gitignore-file"><a href="#git-will-add-a-gitignore-file" class="headerlink" title="--git will add a .gitignore file."></a><code>--git</code> will add a .gitignore file.</h6><h5 id="Install-the-necessary-npm-packages"><a href="#Install-the-necessary-npm-packages" class="headerlink" title="Install the necessary npm packages:"></a>Install the necessary npm packages:</h5><p><code>npm install</code></p>
+<h5 id="Create-middleware-folder-and-app-folder"><a href="#Create-middleware-folder-and-app-folder" class="headerlink" title="Create middleware folder and app folder:"></a>Create middleware folder and app folder:</h5><p><code>mkdir middleware app</code></p>
+<h5 id="Delete-routes-folder-views-and-public-folders"><a href="#Delete-routes-folder-views-and-public-folders" class="headerlink" title="Delete routes folder, views and public folders:"></a>Delete routes folder, views and public folders:</h5><p><code>rm -rf routes views public</code></p>
+<h5 id="Remove-unused-dependencies"><a href="#Remove-unused-dependencies" class="headerlink" title="Remove unused dependencies:"></a>Remove unused dependencies:</h5><p><code>npm uninstall --save ejs</code></p>
+<h3 id="Install-runtime-dependencies"><a href="#Install-runtime-dependencies" class="headerlink" title="Install runtime dependencies"></a>Install runtime dependencies</h3><p><code>npm install --save compression cors helmet lodash longjohn nconf request request-debug request-promise winston</code></p>
+<h5 id="Short-explanation-of-each-dependency"><a href="#Short-explanation-of-each-dependency" class="headerlink" title="Short explanation of each dependency:"></a>Short explanation of each dependency:</h5><ul>
+<li><strong> compression </strong> - adds gzip compression.</li>
+<li><strong> cors </strong> - adds cors support.</li>
+<li><strong> helmet </strong> - Helmet helps you secure your Express apps by setting various HTTP headers. It’s not a silver bullet, but it can help!</li>
+<li><strong> lodash </strong> - Lodash makes JavaScript easier by taking the hassle out of working with arrays, numbers, objects, strings, etc.</li>
+<li><strong> nconf </strong> - Hierarchical node.js configuration with files, environment variables, command-line arguments, and atomic object merging.</li>
+<li><strong> longjohn </strong> - Long stack traces for node.js with configurable call trace length.</li>
+<li><strong> request-debug </strong> - an easy way to monitor HTTP(S) requests performed by the request module, and their responses from external servers.</li>
+<li><strong> request-promise </strong> - adds a Bluebird-powered .then(…) method to Request call objects.</li>
+<li><strong> winston </strong> - a simple and universal logging library with support for multiple transports.</li>
+</ul>
+<h3 id="Install-compile-time-dependencies"><a href="#Install-compile-time-dependencies" class="headerlink" title="Install compile time dependencies"></a>Install compile time dependencies</h3><p><code>npm install --save-dev chai eslint eslint-config-standard eslint-plugin-promise eslint-plugin-standard eslint-watch istanbul mocha nock nodemon sinon sinon-as-promised supertest</code></p>
+<h5 id="Short-explanation-of-each-dependency-1"><a href="#Short-explanation-of-each-dependency-1" class="headerlink" title="Short explanation of each dependency:"></a>Short explanation of each dependency:</h5><ul>
+<li><strong> chai </strong> - BDD/TDD assertion library for node.js and the browser. Test framework agnostic.</li>
+<li><strong> eslint </strong> - a tool for identifying and reporting on patterns found in ECMAScript/JavaScript code.</li>
+<li><strong> eslint-config-standard </strong> - module needed for eslint-watch</li>
+<li><strong> eslint-plugin-promise </strong> - module needed for eslint-watch</li>
+<li><strong> eslint-plugin-standard </strong> - module needed for eslint-watch</li>
+<li><strong> eslint-watch </strong> - a simple command line tool that wraps Eslint. Eslint Watch provides file watching and command line improvements to the currently existing Eslint command line interface.</li>
+<li><strong> istanbul </strong> - JS code coverage tool that computes statement, line, function and branch coverage with module loader hooks to transparently add coverage when running tests. </li>
+<li><strong> mocha </strong> - simple, flexible, test framework</li>
+<li><strong> nock </strong> - an HTTP mocking and expectations library for Node.js</li>
+<li><strong> nodemon </strong> - nodemon will watch the files in the directory in which nodemon was started, and if any files change, nodemon will automatically estart your node application.</li>
+<li><strong> sinon </strong> - standalone and test framework agnostic JavaScript test spies, stubs and mocks.</li>
+<li><strong> sinon </strong> - as-promised -sinon with promises</li>
+<li><strong> supertest </strong> - the motivation with this module is to provide a high-level abstraction for testing HTTP, while still allowing you to drop down to the lower-level API provided by super-agent.</li>
+</ul>
+<h3 id="Configure-ESLint"><a href="#Configure-ESLint" class="headerlink" title="Configure ESLint"></a>Configure ESLint</h3><p>ESLint is a pluggable linting utility for JavaScript. We can use this to enforce code styling rules.</p>
+<p>Create the following files in the project directory to configure ESLint:<br><code>.eslintignore</code> with the following content:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">/public/**/*.js</div><div class="line">/coverage/**/*.js</div></pre></td></tr></table></figure>
+<p><code>.eslintrc.yml</code> with the following content:<br><figure class="highlight yaml"><table><tr><td class="code"><pre><div class="line"><span class="attr">extends:</span> standard</div><div class="line"><span class="attr">plugins:</span></div><div class="line"><span class="bullet">  -</span> standard</div><div class="line"><span class="attr">parserOptions:</span></div><div class="line"><span class="attr">  ecmaversion:</span> <span class="number">6</span></div><div class="line"><span class="attr">env:</span></div><div class="line"><span class="attr">  node:</span> <span class="literal">true</span></div><div class="line"><span class="attr">  es6:</span> <span class="literal">true</span></div><div class="line"><span class="attr">  mocha:</span> <span class="literal">true</span></div><div class="line"><span class="attr">rules:</span></div><div class="line"><span class="attr">  semi:</span></div><div class="line"><span class="bullet">    -</span> error</div><div class="line"><span class="bullet">    -</span> always</div><div class="line"><span class="attr">  quotes:</span></div><div class="line"><span class="bullet">    -</span> error</div><div class="line"><span class="bullet">    -</span> single</div><div class="line"><span class="attr">  curly:</span> error</div><div class="line"><span class="attr">  space-before-function-paren:</span> off</div></pre></td></tr></table></figure></p>
+<p>You can adjust these options as needed.</p>
+<h3 id="Add-NPM-Tasks"><a href="#Add-NPM-Tasks" class="headerlink" title="Add NPM Tasks"></a>Add NPM Tasks</h3><p>Update the <code>scripts</code> section with the following npm tasks in the <code>package.json</code> file:</p>
+<ul>
+<li>start - start the application and watch for file changes </li>
+<li>test - kicks off build process</li>
+<li>build - run lint, tests and coverage</li>
+<li>lint - run lint</li>
+<li>lint:watch - run lint continuously and watch for file changes</li>
+<li>test:single - run tests</li>
+<li>unit-tests - run unit tests</li>
+<li>unit-tests:watch - run unit-tests continuously and watch for file changes</li>
+<li>integration-tests - run integration tests</li>
+<li>coverage - run coverage for all tests</li>
+<li>coverage-unit-tests - run coverage for unit tests</li>
+<li>coverage-integration-tests - run coverage for integration tests</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><div class="line">"start": "npm install &amp;&amp; nodemon ./bin/www",</div><div class="line">"test": "npm run build",</div><div class="line">"build": "npm install &amp;&amp; npm run lint &amp;&amp; npm run test:single &amp;&amp; npm run coverage",</div><div class="line">"lint": "esw .",</div><div class="line">"lint:watch": "esw . -w",</div><div class="line">"test:single": "npm run unit-tests &amp;&amp; npm run integration-tests",</div><div class="line">"unit-tests": "mocha --check-leaks --harmony app/**/*.spec.js",</div><div class="line">"unit-tests:watch": "mocha --check-leaks --harmony app/**/*.spec.js -w",</div><div class="line">"integration-tests": "mocha --check-leaks --harmony app/**/*.integration.js",</div><div class="line">"coverage": "npm run coverage-unit-tests &amp;&amp; npm run coverage-integration-tests",</div><div class="line">"coverage-unit-tests": "istanbul cover --root app --dir ./coverage/unit -x **/**.integration.js -x **/**/*.spec.js ./node_modules/mocha/bin/_mocha -- --check-leaks --harmony --grep unit app/**/*.js",</div><div class="line">"coverage-integration-tests": "istanbul cover --root app --dir ./coverage/integration -x **/*.integration.js -x **/**/*.spec.js ./node_modules/mocha/bin/_mocha -- --check-leaks --harmony --grep integration app/**/*.js"</div></pre></td></tr></table></figure>
+<p><code>npm start</code> and <code>npm test</code> can be run as is, the other tasks need to include the <code>run</code> keyword.<br><code>npm run build</code> for example.</p>
+<h2 id="Create-additional-files"><a href="#Create-additional-files" class="headerlink" title="Create additional files"></a>Create additional files</h2><h3 id="Create-config-json-to-store-configurable-properties-with-the-following-content"><a href="#Create-config-json-to-store-configurable-properties-with-the-following-content" class="headerlink" title="Create config.json to store configurable properties with the following content:"></a>Create <code>config.json</code> to store configurable properties with the following content:</h3><figure class="highlight json"><table><tr><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"application"</span>: &#123;</div><div class="line">    <span class="attr">"port"</span>: <span class="number">3100</span>,</div><div class="line">    <span class="attr">"local"</span>: <span class="string">"true"</span></div><div class="line">  &#125;,</div><div class="line">  <span class="attr">"logging"</span>: &#123;</div><div class="line">    <span class="attr">"level"</span>: <span class="string">"info"</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="Create-middleware-configs-js-to-bootstrap-nconf-with-the-following-content"><a href="#Create-middleware-configs-js-to-bootstrap-nconf-with-the-following-content" class="headerlink" title="Create middleware/configs.js to bootstrap nconf with the following content:"></a>Create <code>middleware/configs.js</code> to bootstrap nconf with the following content:</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="meta">'use strict'</span>;</div><div class="line"> </div><div class="line"><span class="keyword">const</span> winston = <span class="built_in">require</span>(<span class="string">'winston'</span>); <span class="comment">// https://www.npmjs.com/package/winston</span></div><div class="line"><span class="keyword">const</span> nconf = <span class="built_in">require</span>(<span class="string">'nconf'</span>); <span class="comment">// https://www.npmjs.com/package/nconf</span></div><div class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>); <span class="comment">// https://www.npmjs.com/package/path</span></div><div class="line"> </div><div class="line">exports.register = () =&gt; &#123;</div><div class="line">  <span class="keyword">let</span> rootPath = path.join(__dirname, <span class="string">'../'</span>);</div><div class="line">  <span class="keyword">let</span> configFile = <span class="string">'config.json'</span>;</div><div class="line"> </div><div class="line">  <span class="comment">// 1. any overrides</span></div><div class="line">  nconf.overrides(&#123;&#125;);</div><div class="line"> </div><div class="line">  <span class="comment">// 2. `process.env`</span></div><div class="line">  <span class="comment">// 3. `process.argv`</span></div><div class="line">  nconf.env()</div><div class="line">    .argv();</div><div class="line"> </div><div class="line">  <span class="comment">// 4. Values in `config.json`</span></div><div class="line">  nconf.file(rootPath + configFile);</div><div class="line"> </div><div class="line">  <span class="comment">// 5. Any default values</span></div><div class="line">  nconf.defaults(&#123;</div><div class="line">    application: &#123;</div><div class="line">      port: <span class="number">3100</span></div><div class="line">    &#125;</div><div class="line">  &#125;);</div><div class="line"> </div><div class="line">  <span class="comment">// Log current configuration</span></div><div class="line">  winston.info(<span class="string">'app - config: logging: '</span>, nconf.get(<span class="string">'logging'</span>));</div><div class="line">  winston.info(<span class="string">'app - config: config file loaded from: '</span>, rootPath + configFile);</div><div class="line">  winston.info(<span class="string">'app - config: application:'</span>, nconf.get(<span class="string">'application'</span>));</div><div class="line"> </div><div class="line">  winston.info(<span class="string">'app - config: nconf loaded'</span>);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h3 id="Create-middleware-handlers-js-to-configure-default-http-handlers-with-the-following-content"><a href="#Create-middleware-handlers-js-to-configure-default-http-handlers-with-the-following-content" class="headerlink" title="Create middleware/handlers.js to configure default http handlers with the following content:"></a>Create <code>middleware/handlers.js</code> to configure default http handlers with the following content:</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="meta">'use strict'</span>;</div><div class="line"> </div><div class="line"><span class="keyword">const</span> winston = <span class="built_in">require</span>(<span class="string">'winston'</span>); <span class="comment">// https://www.npmjs.com/package/winston</span></div><div class="line"> </div><div class="line">exports.register = (app) =&gt; &#123;</div><div class="line">  registerDefaultHandler(app);</div><div class="line">  winston.info(<span class="string">'app - handlers: default handler loaded'</span>);</div><div class="line"> </div><div class="line">  registerNotFoundHandler(app);</div><div class="line">  winston.info(<span class="string">'app - handlers: not found handler loaded'</span>);</div><div class="line"> </div><div class="line">  registerErrorHandler(app);</div><div class="line">  winston.info(<span class="string">'app - handlers: error handler loaded'</span>);</div><div class="line">&#125;;</div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">registerDefaultHandler</span>(<span class="params">app</span>) </span>&#123;</div><div class="line">  app.get(<span class="string">'/'</span>, (req, res) =&gt; &#123;</div><div class="line">    res.send(<span class="string">''</span>);</div><div class="line">  &#125;);</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">registerNotFoundHandler</span>(<span class="params">app</span>) </span>&#123;</div><div class="line">  app.use((req, res, next) =&gt; &#123;</div><div class="line">    <span class="keyword">let</span> err = <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Not Found'</span>);</div><div class="line">    err.status = <span class="number">404</span>;</div><div class="line">    next(err);</div><div class="line">  &#125;);</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="comment">/**</span></div><div class="line"> * development error handler, will print stacktrace</div><div class="line"> * production error handler, no stack traces leaked to user</div><div class="line"> * @param app</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">registerErrorHandler</span>(<span class="params">app</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (app.get(<span class="string">'env'</span>) === <span class="string">'development'</span>) &#123;</div><div class="line">    app.use((err, req, res, next) =&gt; &#123;</div><div class="line">      res.status(err.status || <span class="number">500</span>)</div><div class="line">        .send(&#123;message: err.message, error: err&#125;);</div><div class="line">    &#125;);</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  app.use((err, req, res, next) =&gt; &#123;</div><div class="line">    res.status(err.status || <span class="number">500</span>)</div><div class="line">      .send(err.message);</div><div class="line">  &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="Create-middleware-routes-js-this-will-contain-the-routes-of-each-module-Add-the-following-content"><a href="#Create-middleware-routes-js-this-will-contain-the-routes-of-each-module-Add-the-following-content" class="headerlink" title="Create middleware/routes.js, this will contain the routes of each module. Add the following content:"></a>Create <code>middleware/routes.js</code>, this will contain the routes of each module. Add the following content:</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="meta">'use strict'</span>;</div><div class="line"> </div><div class="line">exports.register = (app) =&gt; &#123;</div><div class="line"> </div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h3 id="Create-middleware-utils-js-with-the-following-content"><a href="#Create-middleware-utils-js-with-the-following-content" class="headerlink" title="Create middleware/utils.js with the following content:"></a>Create <code>middleware/utils.js</code> with the following content:</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="meta">'use strict'</span>;</div><div class="line"> </div><div class="line"><span class="keyword">const</span> winston = <span class="built_in">require</span>(<span class="string">'winston'</span>); <span class="comment">// https://www.npmjs.com/package/winston</span></div><div class="line"><span class="keyword">const</span> morgan = <span class="built_in">require</span>(<span class="string">'morgan'</span>); <span class="comment">// https://www.npmjs.com/package/morgan</span></div><div class="line"><span class="keyword">const</span> cookieParser = <span class="built_in">require</span>(<span class="string">'cookie-parser'</span>); <span class="comment">// https://www.npmjs.com/package/cookie-parser</span></div><div class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">'body-parser'</span>); <span class="comment">// https://www.npmjs.com/package/body-parser</span></div><div class="line"><span class="keyword">const</span> cors = <span class="built_in">require</span>(<span class="string">'cors'</span>); <span class="comment">// https://www.npmjs.com/package/cors</span></div><div class="line"><span class="keyword">const</span> helmet = <span class="built_in">require</span>(<span class="string">'helmet'</span>); <span class="comment">// https://www.npmjs.com/package/helmet</span></div><div class="line"><span class="keyword">const</span> nconf = <span class="built_in">require</span>(<span class="string">'nconf'</span>); <span class="comment">// https://www.npmjs.com/package/nconf</span></div><div class="line"><span class="keyword">const</span> compression = <span class="built_in">require</span>(<span class="string">'compression'</span>); <span class="comment">// https://www.npmjs.com/package/compression</span></div><div class="line"><span class="keyword">const</span> rp = <span class="built_in">require</span>(<span class="string">'request-promise'</span>); <span class="comment">// https://www.npmjs.com/package/request-promise</span></div><div class="line"> </div><div class="line">exports.register = (app) =&gt; &#123;</div><div class="line">  <span class="keyword">let</span> verboseLogging = (nconf.get(<span class="string">'logging:level'</span>) === <span class="string">'debug'</span>);</div><div class="line">  <span class="keyword">let</span> local = (nconf.get(<span class="string">'application:local'</span>) === <span class="string">'true'</span>);</div><div class="line">  <span class="keyword">if</span> (verboseLogging || local) &#123;</div><div class="line">    winston.info(<span class="string">'app - utils: debug logging enabled loaded'</span>);</div><div class="line"> </div><div class="line">    app.use(morgan(<span class="string">'dev'</span>));</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      winston.remove(winston.transports.Console);</div><div class="line">    &#125; <span class="keyword">catch</span> (error) &#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">    winston.add(winston.transports.Console, &#123;<span class="string">'timestamp'</span>: <span class="literal">true</span>&#125;);</div><div class="line">    winston.info(<span class="string">'app - utils: morgan dev loaded'</span>);</div><div class="line"> </div><div class="line">    <span class="built_in">require</span>(<span class="string">'longjohn'</span>); <span class="comment">// https://www.npmjs.com/package/longjohn</span></div><div class="line">    winston.info(<span class="string">'app - utils: longjohn loaded'</span>);</div><div class="line"> </div><div class="line">    <span class="keyword">if</span> (verboseLogging || !local) &#123;</div><div class="line">      <span class="built_in">require</span>(<span class="string">'request-debug'</span>)(rp); <span class="comment">// https://www.npmjs.com/package/request-debug</span></div><div class="line">      winston.info(<span class="string">'app - utils: request-debug loaded'</span>);</div><div class="line">    &#125;</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    app.use(morgan(<span class="string">'combined'</span>));</div><div class="line">    winston.info(<span class="string">'app - utils: morgan combined loaded'</span>);</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  app.use(compression());</div><div class="line">  winston.info(<span class="string">'app - utils: gzip compression loaded'</span>);</div><div class="line"> </div><div class="line">  app.use(cookieParser());</div><div class="line">  winston.info(<span class="string">'app - utils: cookieparser loaded'</span>);</div><div class="line"> </div><div class="line">  app.use(bodyParser.json());</div><div class="line">  app.use(bodyParser.urlencoded(&#123;extended: <span class="literal">false</span>&#125;));</div><div class="line">  winston.info(<span class="string">'app - utils: bodyparser loaded'</span>);</div><div class="line"> </div><div class="line">  app.use(cors());</div><div class="line">  winston.info(<span class="string">'app - utils: cors loaded'</span>);</div><div class="line"> </div><div class="line">  app.options(<span class="string">'*'</span>, cors());</div><div class="line">  winston.info(<span class="string">'app - utils: cors preflight loaded'</span>);</div><div class="line">   </div><div class="line">  app.use(helmet());</div><div class="line">  winston.info(<span class="string">'app - utils: helmet loaded'</span>);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h3 id="Update-the-app-js-file-which-will-bootstrap-the-middleware-components-Replace-the-entire-file-with-the-following-content"><a href="#Update-the-app-js-file-which-will-bootstrap-the-middleware-components-Replace-the-entire-file-with-the-following-content" class="headerlink" title="Update the app.js file, which will bootstrap the middleware components. Replace the entire file with the following content:"></a>Update the app.js file, which will bootstrap the middleware components. Replace the entire file with the following content:</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="meta">'use strict'</span>;</div><div class="line"> </div><div class="line"><span class="keyword">const</span> winston = <span class="built_in">require</span>(<span class="string">'winston'</span>);</div><div class="line"><span class="keyword">const</span> nconf = <span class="built_in">require</span>(<span class="string">'nconf'</span>);</div><div class="line"> </div><div class="line">winston.info(<span class="string">'app: configs loading'</span>);</div><div class="line"><span class="keyword">const</span> configs = <span class="built_in">require</span>(<span class="string">'./middleware/configs'</span>);</div><div class="line">configs.register();</div><div class="line">winston.info(<span class="string">'app: configs loaded'</span>);</div><div class="line"> </div><div class="line">winston.info(<span class="string">'app loading'</span>);</div><div class="line"> </div><div class="line">winston.info(<span class="string">'app: express loading'</span>);</div><div class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</div><div class="line"><span class="keyword">let</span> app = express();</div><div class="line">winston.info(<span class="string">'app: express loaded'</span>);</div><div class="line"> </div><div class="line">winston.info(<span class="string">'app: utils loading'</span>);</div><div class="line"><span class="keyword">const</span> utils = <span class="built_in">require</span>(<span class="string">'./middleware/utils'</span>);</div><div class="line">utils.register(app);</div><div class="line">winston.info(<span class="string">'app: utils loaded'</span>);</div><div class="line"> </div><div class="line">winston.info(<span class="string">'app: routes loading'</span>);</div><div class="line"><span class="keyword">const</span> routes = <span class="built_in">require</span>(<span class="string">'./middleware/routes'</span>);</div><div class="line">routes.register(app);</div><div class="line">winston.info(<span class="string">'app: routes loaded'</span>);</div><div class="line"> </div><div class="line">winston.info(<span class="string">'app: handlers loading'</span>);</div><div class="line"><span class="keyword">const</span> handlers = <span class="built_in">require</span>(<span class="string">'./middleware/handlers'</span>);</div><div class="line">handlers.register(app);</div><div class="line">winston.info(<span class="string">'app: handlers loaded'</span>);</div><div class="line"> </div><div class="line">winston.info(<span class="string">'app loaded'</span>);</div><div class="line"> </div><div class="line">winston.level = nconf.get(<span class="string">'logging:level'</span>);</div><div class="line"> </div><div class="line"><span class="built_in">module</span>.exports = app;</div></pre></td></tr></table></figure>
+<h3 id="Update-the-bin-www-file-the-entry-point-of-the-application-Replace-the-entire-file-with-the-following-content"><a href="#Update-the-bin-www-file-the-entry-point-of-the-application-Replace-the-entire-file-with-the-following-content" class="headerlink" title="Update the bin/www file, the entry point of the application. Replace the entire file with the following content:"></a>Update the bin/www file, the entry point of the application. Replace the entire file with the following content:</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="meta">#!/usr/bin/env node</span></div><div class="line"><span class="meta">'use strict'</span>;</div><div class="line"> </div><div class="line"><span class="comment">/**</span></div><div class="line"> * Module dependencies.</div><div class="line"> */</div><div class="line"> </div><div class="line"><span class="keyword">const</span> nconf = <span class="built_in">require</span>(<span class="string">'nconf'</span>);</div><div class="line"><span class="keyword">const</span> app = <span class="built_in">require</span>(<span class="string">'../app'</span>);</div><div class="line"><span class="keyword">const</span> debug = <span class="built_in">require</span>(<span class="string">'debug'</span>)(<span class="string">'source:server'</span>);</div><div class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);</div><div class="line"><span class="keyword">const</span> winston = <span class="built_in">require</span>(<span class="string">'winston'</span>);</div><div class="line"> </div><div class="line">winston.info(<span class="string">'http loading'</span>);</div><div class="line"><span class="keyword">const</span> port = normalizePort(nconf.get(<span class="string">'application:port'</span>));</div><div class="line"><span class="keyword">const</span> server = http.createServer(app);</div><div class="line">app.set(<span class="string">'port'</span>, port);</div><div class="line">server.listen(port);</div><div class="line">server.on(<span class="string">'error'</span>, onError);</div><div class="line">server.on(<span class="string">'listening'</span>, onListening);</div><div class="line">winston.info(<span class="string">'http loaded'</span>);</div><div class="line"> </div><div class="line">winston.info(<span class="string">'node application started and listening on port'</span>, port);</div><div class="line"> </div><div class="line"><span class="comment">/**</span></div><div class="line"> * Normalize a port into a number, string, or false.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">normalizePort</span>(<span class="params">val</span>) </span>&#123;</div><div class="line">  <span class="keyword">let</span> port = <span class="built_in">parseInt</span>(val, <span class="number">10</span>);</div><div class="line"> </div><div class="line">  <span class="keyword">if</span> (<span class="built_in">isNaN</span>(port)) &#123;</div><div class="line">    <span class="comment">// named pipe</span></div><div class="line">    <span class="keyword">return</span> val;</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  <span class="keyword">if</span> (port &gt;= <span class="number">0</span>) &#123;</div><div class="line">    <span class="comment">// port number</span></div><div class="line">    <span class="keyword">return</span> port;</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="comment">/**</span></div><div class="line"> * Event listener for HTTP server "error" event.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">onError</span>(<span class="params">error</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (error.syscall !== <span class="string">'listen'</span>) &#123;</div><div class="line">    <span class="keyword">throw</span> error;</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  <span class="keyword">let</span> bind = <span class="keyword">typeof</span> port === <span class="string">'string'</span></div><div class="line">    ? <span class="string">'Pipe '</span> + port</div><div class="line">    : <span class="string">'Port '</span> + port;</div><div class="line"> </div><div class="line">  <span class="comment">// handle specific listen errors with friendly messages</span></div><div class="line">  <span class="keyword">switch</span> (error.code) &#123;</div><div class="line">    <span class="keyword">case</span> <span class="string">'EACCES'</span>:</div><div class="line">      <span class="built_in">console</span>.error(bind + <span class="string">' requires elevated privileges'</span>);</div><div class="line">      process.exit(<span class="number">1</span>);</div><div class="line">      <span class="keyword">break</span>;</div><div class="line">    <span class="keyword">case</span> <span class="string">'EADDRINUSE'</span>:</div><div class="line">      <span class="built_in">console</span>.error(bind + <span class="string">' is already in use'</span>);</div><div class="line">      process.exit(<span class="number">1</span>);</div><div class="line">      <span class="keyword">break</span>;</div><div class="line">    <span class="keyword">default</span>:</div><div class="line">      <span class="keyword">throw</span> error;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="comment">/**</span></div><div class="line"> * Event listener for HTTP server "listening" event.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">onListening</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">let</span> addr = server.address();</div><div class="line">  <span class="keyword">let</span> bind = <span class="keyword">typeof</span> addr === <span class="string">'string'</span></div><div class="line">    ? <span class="string">'pipe '</span> + addr</div><div class="line">    : <span class="string">'port '</span> + addr.port;</div><div class="line">  debug(<span class="string">'Listening on '</span> + bind);</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="built_in">module</span>.exports = server;</div></pre></td></tr></table></figure>
+<p>Run <code>npm start</code> to start the application. You should be able to navigate to <a href="http://localhost:3100/" target="_blank" rel="external">http://localhost:3100/</a> now (which will serve an empty page).</p>
+<p>That’s it! The project setup is now done! <a href="/2016/08/21/node-api-express-es6-part2/">We will discuss writing modules in part 2</a>.</p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://moretconsultancy.com/2016/08/20/node-api-express-es6-part1/" data-id="cis5v339i0002g0uvs2fo1sxp" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="http://moretconsultancy.com/2016/08/20/node-api-express-es6-part1/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://moretconsultancy.com/2016/08/20/node-api-express-es6-part1/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2016/08/21/node-api-express-es6-part2/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Newer</strong>
+            <div class="article-nav-title">
+                
+                    How to create a modular RESTfull API with Node.js, Express and ECMAScript 6 Part 2
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2015/12/08/asp-net-5-with-docker/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">Getting started with ASP.NET 5 and Docker</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">recent</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/08/21/node-api-express-es6-part2/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/2016/08/21/node-api-express-es6-part2/node-api-express-thumbnail.png)" alt="How to create a modular RESTfull API with Node.js, Express and ECMAScript 6 Part 2" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Tutorials/">Tutorials</a></p>
+                            <p class="item-title"><a href="/2016/08/21/node-api-express-es6-part2/" class="title">How to create a modular RESTfull API with Node.js, Express and ECMAScript 6 Part 2</a></p>
+                            <p class="item-date"><time datetime="2016-08-21T15:54:50.000Z" itemprop="datePublished">2016-08-21</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/08/20/node-api-express-es6-part1/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/2016/08/20/node-api-express-es6-part1/node-api-express-thumbnail.png)" alt="How to create a modular RESTfull API with Node.js, Express and ECMAScript 6 Part 1" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Tutorials/">Tutorials</a></p>
+                            <p class="item-title"><a href="/2016/08/20/node-api-express-es6-part1/" class="title">How to create a modular RESTfull API with Node.js, Express and ECMAScript 6 Part 1</a></p>
+                            <p class="item-date"><time datetime="2016-08-20T17:27:56.000Z" itemprop="datePublished">2016-08-20</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2015/12/08/asp-net-5-with-docker/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/2015/12/08/asp-net-5-with-docker/asp-net5-docker-thumbnail.png)" alt="Getting started with ASP.NET 5 and Docker" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Tutorials/">Tutorials</a></p>
+                            <p class="item-title"><a href="/2015/12/08/asp-net-5-with-docker/" class="title">Getting started with ASP.NET 5 and Docker</a></p>
+                            <p class="item-date"><time datetime="2015-12-08T21:54:02.000Z" itemprop="datePublished">2015-12-08</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Tutorials/">Tutorials</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">archives</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/API/">API</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ASPNET/">ASPNET</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ECMAScript/">ECMAScript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Express/">Express</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node/">Node</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/REST/">REST</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebAPI/">WebAPI</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Yeoman/">Yeoman</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/API/" style="font-size: 20px;">API</a> <a href="/tags/ASPNET/" style="font-size: 10px;">ASPNET</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/ECMAScript/" style="font-size: 15px;">ECMAScript</a> <a href="/tags/Express/" style="font-size: 15px;">Express</a> <a href="/tags/Node/" style="font-size: 15px;">Node</a> <a href="/tags/REST/" style="font-size: 20px;">REST</a> <a href="/tags/WebAPI/" style="font-size: 10px;">WebAPI</a> <a href="/tags/Yeoman/" style="font-size: 10px;">Yeoman</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">links</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2016 Luuk Moret<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_config = function () {
+        
+            this.page.url = 'http://moretconsultancy.com/2016/08/20/node-api-express-es6-part1/';
+        
+        this.page.identifier = 'node-api-express-es6-part1';
+    };
+    (function() { 
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'luukmoret' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+
+
+    
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

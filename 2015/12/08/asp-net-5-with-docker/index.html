@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <meta charset="utf-8">
+    
+    <title>Getting started with ASP.NET 5 and Docker | Moret Consultancy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="In this short tutorial I will explain how to get started with an ASP.NET 5 WebAPI application and how to deploy this in a Docker Container.
+ASP.NET 5 is an open source web framework for building moder">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Getting started with ASP.NET 5 and Docker">
+<meta property="og:url" content="http://moretconsultancy.com/2015/12/08/asp-net-5-with-docker/index.html">
+<meta property="og:site_name" content="Moret Consultancy">
+<meta property="og:description" content="In this short tutorial I will explain how to get started with an ASP.NET 5 WebAPI application and how to deploy this in a Docker Container.
+ASP.NET 5 is an open source web framework for building moder">
+<meta property="og:image" content="http://moretconsultancy.com/2015/12/08/asp-net-5-with-docker/asp-net5-docker-thumbnail.png">
+<meta property="og:updated_time" content="2016-08-22T08:34:10.890Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Getting started with ASP.NET 5 and Docker">
+<meta name="twitter:description" content="In this short tutorial I will explain how to get started with an ASP.NET 5 WebAPI application and how to deploy this in a Docker Container.
+ASP.NET 5 is an open source web framework for building moder">
+<meta name="twitter:image" content="http://moretconsultancy.com/2015/12/08/asp-net-5-with-docker/asp-net5-docker-thumbnail.png">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/vendor/open-sans/styles.css">
+    <link rel="stylesheet" href="/vendor/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/vendor/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-71243417-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+    
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                
+                <span class="site-title">Moret Consultancy</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/tags">Tags</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/images/avatar.jpg" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">Tags</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/images/avatar.jpg" />
+            <h2 id="name">Luuk Moret</h2>
+            <h3 id="title">Freelance Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>Limburg, Netherlands</span>
+            <a id="follow" target="_blank" href="https://twitter.com/intent/user?screen_name=luukmoret">FOLLOW</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                3
+                <span>posts</span>
+            </div>
+            <div class="article-info-block">
+                9
+                <span>tags</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/luukmoret" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://twitter.com/LuukMoret" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://nl.linkedin.com/in/luukmoret" target="_blank" title="linkedin" class=tooltip>
+                            <i class="fa fa-linkedin"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://stackoverflow.com/users/4972749/luuk-moret" target="_blank" title="stack-overflow" class=tooltip>
+                            <i class="fa fa-stack-overflow"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-asp-net-5-with-docker" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            
+	
+		<img src="/2015/12/08/asp-net-5-with-docker/asp-net5-docker.png" class="article-banner" />
+	
+
+
+
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            Getting started with ASP.NET 5 and Docker
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2015/12/08/asp-net-5-with-docker/">
+            <time datetime="2015-12-08T21:54:02.000Z" itemprop="datePublished">2015-12-08</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/Tutorials/">Tutorials</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/API/">API</a>, <a class="tag-link" href="/tags/ASPNET/">ASPNET</a>, <a class="tag-link" href="/tags/Docker/">Docker</a>, <a class="tag-link" href="/tags/REST/">REST</a>, <a class="tag-link" href="/tags/WebAPI/">WebAPI</a>, <a class="tag-link" href="/tags/Yeoman/">Yeoman</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>In this short tutorial I will explain how to get started with an ASP.NET 5 WebAPI application and how to deploy this in a Docker Container.</p>
+<p>ASP.NET 5 is an open source web framework for building modern web applications that can be developed and run on Windows, Linux and the Mac. It includes the MVC 6 framework, which now combines the features of MVC and Web API into a single web programming framework.  ASP.NET 5 will also be the basis for SignalR 3 - enabling you to add real time functionality to cloud connected applications. ASP.NET 5 is built on the .NET Core runtime, but it can also be run on the full .NET Framework for maximum compatibility.</p>
+<p><strong>Some of the improvements of ASP.NET 5:</strong></p>
+<ul>
+<li>Build and run cross-platform ASP.NET apps on Windows, Mac and Linux</li>
+<li>Built on .NET Core, which supports true side-by-side app versioning</li>
+<li>New tooling that simplifies modern Web development</li>
+<li>Single aligned web stack for Web UI and Web APIs</li>
+<li>Cloud-ready environment-based configuration</li>
+<li>Integrated support for creating and using NuGet packages</li>
+<li>Built-in support for dependency injection</li>
+<li>Ability to host on IIS or self-host in your own process</li>
+</ul>
+<p>Docker is a platform for developers and sysadmins to develop, ship, and run applications. Docker lets you quickly assemble applications from components and eliminates the friction that can come when shipping code. Docker lets you get your code tested and deployed into production as fast as possible.</p>
+<p><strong>Some of the benefits of Docker:</strong></p>
+<ul>
+<li>Easily build new containers, enable rapid iteration of your applications, and increase the visibility of changes. This helps everyone in your organization understand how an application works and how it is built.</li>
+<li>Docker containers are lightweight and fast! Containers have sub-second launch times, reducing the cycle time of development, testing, and deployment.</li>
+<li>Docker containers run (almost) everywhere. You can deploy containers on desktops, physical servers, virtual machines, into data centers, and up to public and private clouds.</li>
+<li>Since Docker runs on so many platforms, it’s easy to move your applications around. You can easily move an application from a testing environment into the cloud and back whenever you need.</li>
+<li>Docker’s lightweight containers also make scaling up and down fast and easy. You can quickly launch more containers when needed and then shut them down easily when they’re no longer needed.</li>
+<li>Docker containers don’t need a hypervisor, so you can pack more of them onto your hosts. This means you get more value out of every server and can potentially reduce what you spend on equipment and licenses.</li>
+<li>As Docker speeds up your work flow, it gets easier to make lots of small changes instead of huge, big bang updates. Smaller changes mean reduced risk and more uptime.</li>
+</ul>
+<a id="more"></a>
+<h2 id="Prerequisites"><a href="#Prerequisites" class="headerlink" title="Prerequisites"></a>Prerequisites</h2><p>The following tools and frameworks will be used during this tutorial:</p>
+<p><strong>ASP.NET 5 RC</strong> - <a href="https://github.com/aspnet/home" title="https://github.com/aspnet/home" target="_blank" rel="external">https://github.com/aspnet/home</a><br>ASP.NET 5 is a new open-source, cross-platform, high performance and lightweight framework for building Web Applications using .NET.</p>
+<p><strong>Docker Toolbox</strong> - <a href="https://www.docker.com/docker-toolbox" title="https://www.docker.com/docker-toolbox" target="_blank" rel="external">https://www.docker.com/docker-toolbox</a><br>The Docker Toolbox is an installer to quickly and easily install and setup a Docker environment on your computer. Available for both Windows and Mac, the Toolbox installs Docker Client, Machine, Compose, Kitematic and VirtualBox.</p>
+<p><strong>Yeoman</strong> - <a href="http://yeoman.io/" title="http://yeoman.io/" target="_blank" rel="external">http://yeoman.io/</a><br>Yeoman is an open source client-side development stack, consisting of tools and frameworks intended to help developers quickly build high quality web applications.</p>
+<p><strong>Note: During this tutorial I will be using a Windows machine but this should also work for OS X or Linux.</strong></p>
+<p>We will start by installing the <code>dnvm</code>. This is the new .NET Version Manager, a set of command line utilities to update and configure which .NET Runtime to use. Fire up a cmd prompt and run the following command:</p>
+<pre><code>@powershell -NoProfile -ExecutionPolicy unrestricted -Command &quot;&amp;{$Branch=&apos;dev&apos;;$wc=New-Object System.Net.WebClient;$wc.Proxy=[System.Net.WebRequest]::DefaultWebProxy;$wc.Proxy.Credentials=[System.Net.CredentialCache]::DefaultNetworkCredentials;Invoke-Expression ($wc.DownloadString(&apos;https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.ps1&apos;))}&quot;
+</code></pre><p>This will download the DNVM script and put it in your user profile. You can check the location of DNVM by running the following command in a cmd prompt: <code>where dnvm</code></p>
+<p>Now run <code>dnvm</code> and install the <code>dnx</code> when prompted.</p>
+<img src="/2015/12/08/asp-net-5-with-docker/asp-net5-docker-dnvm.jpg" alt="dnvm" title="dnvm">
+<p>Next, download and install the <a href="https://github.com/docker/toolbox/releases/download/v1.9.1c/DockerToolbox-1.9.1c.exe" title="Docker Toolbox for Windows" target="_blank" rel="external">Docker Toolbox for Windows</a>. Be sure to check Docker Client, Docker Machine, Docker Compose and VirtualBox. You can optionally check Docker Kitematic.</p>
+<p>Lastly, we install Yeoman by running the following command: <code>npm install -g yo</code> and install the Yeoman generator for ASP.NET 5 projects by running <code>npm install -g generator-aspnet</code>.</p>
+<p><strong>Note: You need to have <a href="https://nodejs.org" title="Node.js" target="_blank" rel="external">Node.js</a> installed on your system to be able install node packages</strong></p>
+<h2 id="Creating-the-application"><a href="#Creating-the-application" class="headerlink" title="Creating the application"></a>Creating the application</h2><p>We are now ready to create our application! Start by executing <code>yo aspnet</code> and select the option <code>Web API Application</code>.</p>
+<img src="/2015/12/08/asp-net-5-with-docker/asp-net5-docker-yo-aspnet.jpg" alt="yo asp-net" title="yo asp-net">
+<p>After the application is completed <code>cd</code> into the newly created folder and run <code>dnu restore</code>. This will install any missing NuGet packages.</p>
+<img src="/2015/12/08/asp-net-5-with-docker/asp-net5-docker-dnu-restore.jpg" alt="dnu restore" title="dnu restore">
+<p>You can optionally run <code>dnu build</code> which will compile the application, but this step is optional as it will automatically build the application when you run it.</p>
+<img src="/2015/12/08/asp-net-5-with-docker/asp-net5-docker-dnu-build.jpg" alt="dnu build" title="dnu build">
+<p>We can run the application by executing <code>dnx web</code>. The application will, by default, run at <a href="http://localhost:5000" title="http://localhost:5000" target="_blank" rel="external">http://localhost:5000</a>. When you navigate to <a href="http://localhost:5000/api/values" title="http://localhost:5000/api/values" target="_blank" rel="external">http://localhost:5000/api/values</a> you should see the JSON response <code>[&quot;value1&quot;,&quot;value2&quot;]</code>.</p>
+<img src="/2015/12/08/asp-net-5-with-docker/asp-net5-docker-dnx-web.jpg" alt="dnx web" title="dnx web">
+<img src="/2015/12/08/asp-net-5-with-docker/asp-net5-docker-localhost-api-values.jpg" alt="http://localhost:5000/api/values" title="http://localhost:5000/api/values">
+<p>Now that we have the application running, we can deploy it in a container so we can easily share it with other people, or fire it up in an continuous integration workflow to perform automated tests.</p>
+<h2 id="Creating-the-Docker-container"><a href="#Creating-the-Docker-container" class="headerlink" title="Creating the Docker container"></a>Creating the Docker container</h2><h3 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h3><p>Docker can build images automatically by reading the instructions from a <code>Dockerfile</code>. A <code>Dockerfile</code> is a text document that contains all the commands a user could call on the command line to assemble an image. Using <code>docker build</code> we can create an automated build that executes several command-line instructions in succession.</p>
+<p>A <code>Dockerfile</code> should already by created when you scaffolded the project with Yeoman. Open this file and replace the content with the following code:</p>
+<pre><code>FROM microsoft/aspnet:1.0.0-rc1-final-coreclr
+
+COPY . /demo
+WORKDIR /demo
+RUN [&quot;dnu&quot;, &quot;restore&quot;]
+
+EXPOSE 5000
+ENTRYPOINT [&quot;dnx&quot;, &quot;web&quot;]
+</code></pre><p><code>FROM</code> will pull the microsoft/aspnet image from Docker Hub (which is based on Debian “jessie”).</p>
+<p><code>COPY</code> will copy everything from the current directory to a folder called <code>demo</code> in the container. </p>
+<p><code>WORKDIR</code> changes the working directory to this folder and execute <code>dnu restore</code>.</p>
+<p><code>EXPOSE</code> informs Docker that the container listens on the specified network ports at runtime. <code>EXPOSE</code> does not make the ports of the container accessible to the host. To do that, you must use either the -p flag to publish a range of ports or the -P flag to publish all of the exposed ports. You can expose one port number and publish it externally under another number. This is mostly used as a documentation mechanism</p>
+<p>Finally, open the file <code>project.json</code> and replace the code block</p>
+<pre><code>&quot;commands&quot;: {
+    &quot;web&quot;: &quot;Microsoft.AspNet.Server.Kestrel&quot;
+},
+</code></pre><p>with</p>
+<pre><code>&quot;commands&quot;: {
+    &quot;web&quot;: &quot;Microsoft.AspNet.Server.Kestrel --server.urls http://*:5000&quot;
+},
+</code></pre><p>The important part is the *, otherwise the <a href="https://github.com/aspnet/KestrelHttpServer" title="Kestrel web server" target="_blank" rel="external">Kestrel web server</a>, A web server for ASP.NET 5 based on libuv, will only listen for localhost and we want it to listen everywhere.</p>
+<h3 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h3><p>Now we are ready to create our container. Start the <code>Docker Quickstart Terminal</code>. There should be a shortcut on your desktop when you installed the Docker Toolbox. </p>
+<img src="/2015/12/08/asp-net-5-with-docker/asp-net5-docker-build.jpg" alt="docker build -t demo ." title="docker build -t demo .">
+<p>Navigate to the folder that contains the Dockerfile.</p>
+<p><code>cd C:/demo/WebAPIApplication</code></p>
+<p>Run the following command <code>docker build -t demo .</code> This will create an image based on the <code>Dockerfile</code>. </p>
+<p>When the image is done building, we can run the container with the following command<br><code>docker run --name=demo -d -p 5000:5000 demo</code></p>
+<img src="/2015/12/08/asp-net-5-with-docker/asp-net5-docker-run.jpg" alt="docker run --name=demo -d -p 5000:5000 demo" title="docker run --name=demo -d -p 5000:5000 demo">
+<p><code>--name=demo</code> will be the name of the container.<br><code>-d</code> runs the container in detached mode.<br><code>-p</code> will map the port of the Docker Host to the port of the container.<br><code>demo</code> refers to the <code>demo</code> image we just created with the <code>docker build</code> command.</p>
+<p>Now that the container is running, we can access it through the Docker Host. To get the IP address of the docker host, run the following command. <code>docker-machine ip default</code>. The default IP address should be <code>192.168.99.100</code>. </p>
+<img src="/2015/12/08/asp-net-5-with-docker/asp-net5-docker-machine-ip.jpg" alt="docker-machine ip default" title="docker-machine ip default">
+<p>The application with the JSON response endpoint should now be accessible at <a href="http://192.168.99.100:5000/api/values" title="http://192.168.99.100:5000/api/values" target="_blank" rel="external">http://192.168.99.100:5000/api/values</a>.</p>
+<img src="/2015/12/08/asp-net-5-with-docker/asp-net5-docker-localhost-api-values-final.jpg" alt="http://192.168.99.100:5000/api/values" title="http://192.168.99.100:5000/api/values">
+<p>The ASP.NET WebAPI application is now running inside a Docker Container based on a Docker Host running Linux. </p>
+<h3 id="Docker-1"><a href="#Docker-1" class="headerlink" title="Docker"></a>Docker</h3><p>Now that the container is running, we can access it through the Docker Host. To get the IP address of the docker host, run the following command. <code>docker-machine ip default</code>. The default IP address should be <code>192.168.99.100</code>. The application with the JSON response endpoint should now be accessible at <a href="http://192.168.99.100:5000/api/values" title="http://192.168.99.100:5000/api/values" target="_blank" rel="external">http://192.168.99.100:5000/api/values</a>.</p>
+<p>To stop the container simply run <code>docker stop demo</code> and to start it again run <code>docker start demo</code>.</p>
+<h2 id="Closing-notes"><a href="#Closing-notes" class="headerlink" title="Closing notes"></a>Closing notes</h2><p>These are just the basics to get up and running with ASP.NET 5 and Docker containers. I encourage you to take a look at the new structure and features of ASP.NET 5 and explore  the different Docker commands available.</p>
+<p>Visit the following sites to read more about these topics:</p>
+<ul>
+<li><a href="http://docs.docker.com/windows/started/" title="http://docs.docker.com/windows/started/" target="_blank" rel="external">http://docs.docker.com/windows/started/</a></li>
+<li><a href="https://github.com/aspnet/home/" title="https://github.com/aspnet/home/" target="_blank" rel="external">https://github.com/aspnet/home/</a></li>
+<li><a href="https://code.visualstudio.com/Docs/runtimes/ASPnet5" title="https://code.visualstudio.com/Docs/runtimes/ASPnet5" target="_blank" rel="external">https://code.visualstudio.com/Docs/runtimes/ASPnet5</a></li>
+<li><a href="http://blogs.msdn.com/b/webdev/archive/2015/01/14/running-asp-net-5-applications-in-linux-containers-with-docker.aspx" title="http://blogs.msdn.com/b/webdev/archive/2015/01/14/running-asp-net-5-applications-in-linux-containers-with-docker.aspx" target="_blank" rel="external">http://blogs.msdn.com/b/webdev/archive/2015/01/14/running-asp-net-5-applications-in-linux-containers-with-docker.aspx</a></li>
+<li><a href="http://www.hanselman.com/blog/BrainstormingDevelopmentWorkflowsWithDockerKitematicVirtualBoxAzureASPNETAndVisualStudio.aspx" title="http://www.hanselman.com/blog/BrainstormingDevelopmentWorkflowsWithDockerKitematicVirtualBoxAzureASPNETAndVisualStudio.aspx" target="_blank" rel="external">http://www.hanselman.com/blog/BrainstormingDevelopmentWorkflowsWithDockerKitematicVirtualBoxAzureASPNETAndVisualStudio.aspx</a></li>
+<li><a href="http://weblogs.asp.net/scottgu/introducing-asp-net-5" title="http://weblogs.asp.net/scottgu/introducing-asp-net-5" target="_blank" rel="external">http://weblogs.asp.net/scottgu/introducing-asp-net-5</a></li>
+<li><a href="https://docs.docker.com/engine/misc/" title="https://docs.docker.com/engine/misc/" target="_blank" rel="external">https://docs.docker.com/engine/misc/</a></li>
+</ul>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://moretconsultancy.com/2015/12/08/asp-net-5-with-docker/" data-id="cis5v339c0000g0uv69hxloxj" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="http://moretconsultancy.com/2015/12/08/asp-net-5-with-docker/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://moretconsultancy.com/2015/12/08/asp-net-5-with-docker/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2016/08/20/node-api-express-es6-part1/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Newer</strong>
+            <div class="article-nav-title">
+                
+                    How to create a modular RESTfull API with Node.js, Express and ECMAScript 6 Part 1
+                
+            </div>
+        </a>
+    
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">recent</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/08/21/node-api-express-es6-part2/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/2016/08/21/node-api-express-es6-part2/node-api-express-thumbnail.png)" alt="How to create a modular RESTfull API with Node.js, Express and ECMAScript 6 Part 2" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Tutorials/">Tutorials</a></p>
+                            <p class="item-title"><a href="/2016/08/21/node-api-express-es6-part2/" class="title">How to create a modular RESTfull API with Node.js, Express and ECMAScript 6 Part 2</a></p>
+                            <p class="item-date"><time datetime="2016-08-21T15:54:50.000Z" itemprop="datePublished">2016-08-21</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/08/20/node-api-express-es6-part1/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/2016/08/20/node-api-express-es6-part1/node-api-express-thumbnail.png)" alt="How to create a modular RESTfull API with Node.js, Express and ECMAScript 6 Part 1" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Tutorials/">Tutorials</a></p>
+                            <p class="item-title"><a href="/2016/08/20/node-api-express-es6-part1/" class="title">How to create a modular RESTfull API with Node.js, Express and ECMAScript 6 Part 1</a></p>
+                            <p class="item-date"><time datetime="2016-08-20T17:27:56.000Z" itemprop="datePublished">2016-08-20</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2015/12/08/asp-net-5-with-docker/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/2015/12/08/asp-net-5-with-docker/asp-net5-docker-thumbnail.png)" alt="Getting started with ASP.NET 5 and Docker" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Tutorials/">Tutorials</a></p>
+                            <p class="item-title"><a href="/2015/12/08/asp-net-5-with-docker/" class="title">Getting started with ASP.NET 5 and Docker</a></p>
+                            <p class="item-date"><time datetime="2015-12-08T21:54:02.000Z" itemprop="datePublished">2015-12-08</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Tutorials/">Tutorials</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">archives</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/API/">API</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ASPNET/">ASPNET</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ECMAScript/">ECMAScript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Express/">Express</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node/">Node</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/REST/">REST</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebAPI/">WebAPI</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Yeoman/">Yeoman</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/API/" style="font-size: 20px;">API</a> <a href="/tags/ASPNET/" style="font-size: 10px;">ASPNET</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/ECMAScript/" style="font-size: 15px;">ECMAScript</a> <a href="/tags/Express/" style="font-size: 15px;">Express</a> <a href="/tags/Node/" style="font-size: 15px;">Node</a> <a href="/tags/REST/" style="font-size: 20px;">REST</a> <a href="/tags/WebAPI/" style="font-size: 10px;">WebAPI</a> <a href="/tags/Yeoman/" style="font-size: 10px;">Yeoman</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">links</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2016 Luuk Moret<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_config = function () {
+        
+            this.page.url = 'http://moretconsultancy.com/2015/12/08/asp-net-5-with-docker/';
+        
+        this.page.identifier = 'asp-net-5-with-docker';
+    };
+    (function() { 
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'luukmoret' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+
+
+    
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
